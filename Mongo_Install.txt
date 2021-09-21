@@ -1,0 +1,57 @@
+After Download
+
+Please install-MOngoDb Community 4.2
+basic install mongo compass..
+
+
+do the complete----
+
+local....
+
+after installation in root c:\
+
+create a folder called 'data' inside this a sub folder called 'db'
+--------------------------------
+---------------
+
+
+Open command prompt
+
+Please go the path 
+
+C:\Program Files\MongoDB\Server\4.2\bin>
+
+--------------------------------------
+
+and issue the command ---- mongod
+--------------------------------------
+---------------------------------
+
+Open another command prompt for mongo shell
+-------------------------------------------
+
+Again Open command prompt
+
+Please go the path 
+
+C:\Program Files\MongoDB\Server\4.2\bin>
+
+Issue command --- mongo
+
+>. is shell where we can issue mongo commands
+---------------------------------------------
+
+GUI software is also available for working
+------------------------------------
+
+
+Robo -studio 3T...download and install
+------------------------------------------
+-------------------------------------------
+
+
+
+
+
+
+

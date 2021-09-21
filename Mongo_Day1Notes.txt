@@ -1,0 +1,479 @@
+MongoDB is document oriented No-SQL database for high storage.It allow to store/manage the data is JSON format (Javascript object notation)
+Key / value concept
+
+Key : value
+{'empno':101,'name':'vijay'}
+
+MongoDB is available under Genral Public Licence for free.. The manufactoring company of mongodv is 10gen.
+
+As per 10gen "Mongodb is scalable , open source , high performance , document oriented database."
+
+Initial develeopment release was in 2002. The first ready production was 1.4 which was in mar'2010.
+
+Database--
+
+Can be divided into 3 types..
+
+RDBMS- Relational data base management system
+OLAP-- Online Analytical processing
+NOSQL-- for non SQL data base/ non relational database..
+Benifits of MongoDB
+-----------------------
+
+It supports query languages
+Fast performance
+Scalable
+
+------------------------------
+
+
+In any database we have table
+
+Employee (table)
+Empno  Name 	City	Salary
+
+
+Each record/row will have 4 values only.We can not have any row which have additional columns or additional type.
+
+But what happens if i want
+1 row like --empno name city salary
+2 row-- empno name city grade
+3 row-- empno name city salary phone bonus
+-------------------------------------------
+
+Abobe is only possible in Mongodb since is it document oriented each row can be different..---------------------------------------
+Key components in mongodb are
+------------------------------
+
+Database-- container (top level container)
+	   Example -- Infinity (database)
+
+Collection-- (table in other database)
+	     Example Employee,Staff,Admin,Salary
+
+Document --- each row (record)
+
+Field--    A name value pair in document.
+	   empno,name
+
+_id --- Field which is used by mongo db for unique entity. (primary key)
+
+Cursor-- Pointer to navigate or traverse the data.
+	
+
+
+-----------------------------------------------
+
+
+
+Open Studio3T.. Make new connection
+
+then connect
+----------------------------------
+
+Open IntelliShell NOW
+------------------------------
+
+
+-----------------------
+To show all database of mongodb instance
+------------------------------------------
+
+show dbs-- show all databases of current system
+
+--------------------
+
+
+
+use command-- it helps to create as well as use existing database...
+
+
+
+use mongotest  (mongotest is my database name)
+
+-----------------------------
+
+
+this create database and also switch
+-----------------------------------
+
+If this does have any collection it will not come in studio3T.
+
+
+-----------------------------------------------
+
+
+command to drop
+-------------------
+
+db.dropdatabase()
+
+
+----------------
+
+Collection - like a table of database.. createCollection command is used to create a collection.. Collection name and some options..
+
+
+
+createCollection(collectionname,options)
+-------------------------------------------
+
+db -- to return current database(to check/validate)
+
+
+db.createCollection("Employee")
+
+Options--
+
+capped-true (fixed)
+sized:32000 (byte)
+autoindexid:false we can create index of our own.
+----
+
+-----------------------------------
+
+
+show collections-- to show all collections of the database.
+
+
+---------------------------------------
+
+
+A collection is also automatically created when we insert records...
+
+
+db.teststudent.insert({'rollno':101,'name':'vijay'})
+
+
+It will create new collection as well as new document inside..
+
+--------------------------
+
+
+show collections -- to verify this..
+
+---------------------------
+
+
+Drop collection---
+
+
+db.collectionname.drop()
+
+---------------------------------
+
+
+To verify
+----
+
+show collections-- this will not come..
+-----------------------------------------------
+
+---------------------------------------------
+
+We will insert document in collection Employee
+---------------------------------------------
+
+
+
+db.Employee.insert({'empno':101,'name':'mark',
+    'city':'chennai','salary':81000})
+
+
+Please insert 3 to 4 records
+-----------------------------------
+
+to show the data
+
+------------------------
+
+find()
+
+db.collectionname.find()
+
+------------------------------
+
+db.Employee.find()
+
+--------------------------
+
+Insert Multiple records at once
+---------------------------------
+
+We use []...
+
+db.Employee.insert(
+[{'empno':999,'name':'sheik','city':'pune','salary':71000},
+{'empno':777,'name':'shruthi','city':'delhi','salary':51000},
+{'empno':889,'name':'hari','city':'mumbai','salary':56000}])
+
+-------------------------
+
+Insert atleast 5-6 more documents in Employee collection..
+-------------------------
+
+
+
+In Mongodb we have limit() function is used to set  a limit for number of documents returned.
+
+db.Employee.find().limit(3)
+
+// 3 documents will be feteched up
+
+------------------------
+
+
+
+skip() it is used to skip number of documents from a set of document. It is used with find and limit..
+
+db.Employee.find().limit(4).skip(2)
+
+
+
+---------------------
+
+Indexing---Indexes are used to optimize the query, give better performance.. It arrange the data as per index field.It helps to perform easy traverse in case of query.
+
+createIndex() is used to create an index...
+
+db.collectionname.createIndex({Key:1})
+
+1- ascending
+-1 descending
+
+
+db.Employee.createIndex({'empno':1})
+
+--------------------
+
+
+To show all indexes of a collections
+
+we have getIndexes() function
+
+------------------
+
+db.collectionname.getIndexes()
+
+
+db.Employee.getIndexes()
+
+--------------------------
+
+drop Index ---
+
+
+db.collectionname.dropIndex({'fieldname':1})
+
+
+
+
+
+db.Employee.dropIndex({'empno':1})
+
+
+---------------
+
+db.Employee.getIndexes()
+-- to verify
+
+
+--------------------------
+
+sort()-- used to sort the documents as per any field/column.
+
+Order can be 
+1- ascending
+-1- descending
+
+
+db.collectionname.sort({field:order})
+
+-----------------------------
+ascending
+db.Employee.find().sort({'salary':1})
+
+descending
+db.Employee.find().sort({'salary':-1})
+
+--------------------
+
+Sorting on two fields.
+
+
+db.Employee.find().sort({'salary':-1},{'name':1})
+
+// if two salary are same then sorting will move to name as well.
+------------------------------------
+
+
+Aggregate()  for aggregation in mongodb we use aggregate() function..
+
+Basic syntax is
+
+db.collectionname.aggregate(aggregateoperation)
+
+
+$sum sum of define values
+$avg avg of defined values
+$min
+ min of defined values
+$max max  of defined values
+$first first value from a set
+$last last value from a set
+
+Sum of salaries on base of city (group)
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$sum:'$salary'}}}])
+
+-----------------------------------
+
+Min of salaries on base of city (group)
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$min:'$salary'}}}])
+
+------------------------------------
+Max of salaries on base of city (group)
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$max:'$salary'}}}])
+
+---------------------------------------
+Avg of salaries on base of city (group)
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$avg:'$salary'}}}])
+
+----------------------------------------
+
+first-- first document from group
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$first:'$salary'}}}])
+
+-------------------
+
+last-- last document from group
+
+db.Employee.aggregate([{$group:
+{_id:"$city",salary:{$last:'$salary'}}}])
+
+-----------------------------------------
+
+Find sum of all salaries irrespective of group
+
+
+
+db.Employee.aggregate([{$group:
+{_id:null,salary:{$sum:'$salary'}}}])
+
+
+
+
+-----------------------------------------
+
+find()-- returns number of documents.
+
+findOne()  to show strict one document only..
+
+
+db.Employee.findOne()
+
+
+-------------------------------------------
+
+Projection---see selected fields only..
+
+Only empno will be returned
+
+db.Employee.find({},{'empno':1})
+
+
+If we want empno and name to be returned
+
+db.Employee.find({},{'empno':1,'name':1})
+
+
+id will not come (0)
+
+db.Employee.find({},{'empno':1,'name':1,'_id':0})
+
+------------------------
+
+Main Data types of mongodb
+--------------------------------------
+
+
+String
+Integer
+Boolean
+Double
+Arrays
+Object
+Null
+Date
+
+db.testdata.insert({'empno':10,
+'name':'vivek',
+'salary':89021.2,
+'status':true,
+'doj':Date()})
+
+db.testdata.find()
+
+----------------------
+
+Array types in collection
+==========================
+
+
+
+db.testdata.insert({'empno':11,
+'name':'raju',
+'salary':89021.2,
+'status':false,
+'doj':Date(),
+'leaves':['mon','wed','sun']
+})
+
+db.testdata.find()
+
+-----------------------------
+
+Object data insert
+-----------------------
+
+var eb={'basic':9100,'hra':810,'tax':300}
+
+db.testdataone.insert({'empno':101,
+'salary':eb})
+
+db.testdataone.find()
+
+----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

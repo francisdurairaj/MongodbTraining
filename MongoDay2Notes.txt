@@ -1,0 +1,371 @@
+Null Data Type insert  in collection
+------------------------------------
+
+db.testdataone.insert({'empno':112,
+    'name':'john','salary':32000,
+    'salarydetails':null})
+    
+
+db.testdataone.find()
+
+---------------------------
+
+Working with dates..
+
+var d=new Date()
+var date2=ISODate()
+var month=date2.getMonth()
+
+db.testcollection.insert({"Date":d,"Date2":date2,
+    "Month":month})
+db.testcollection.find()
+
+--------------------
+
+Conditional operators in Mongodb
+--------------------------------
+
+Equality  - $eq  {field:{$eq:value}}
+Less then - $lt  {field:{$lt:value}}
+Greater then - $gt  {field:{$gt:value}}
+Less then equal - $lte  {field:{$lte:value}}
+Greater then equal- $gte  {field:{$gte:value}}
+Not Equal-  $ne  {field:{$ne:value}}
+In --- $in  {field:{$in:[value,value,value]}}
+
+db.Employee.find()
+
+
+// Display details of employee for name='Vijay'
+db.Employee.find({'name':{$eq:'Vijay'}})
+
+// Display details of employee for city 'delhi'
+
+db.Employee.find({'city':{$eq:'delhi'}})
+
+---------------------------------------
+
+// Details of Employees for salary <60000
+
+db.Employee.find({'salary':{$lt:60000}})
+
+-----------------------------------------
+
+// Details of Employees for salary >60000
+
+db.Employee.find({'salary':{$gt:60000}})
+
+------------------------------------------
+
+// Details of Employees for salary <=60000
+
+db.Employee.find({'salary':{$lte:60000}})
+
+// Details of Employees for salary >=60000
+
+db.Employee.find({'salary':{$gte:60000}})
+
+// Details of Employees for salary (not equal)!=71000
+
+db.Employee.find({'salary':{$ne:71000}})
+
+
+// Details of Employees excluding delhi
+
+
+db.Employee.find({'city':{$ne:'delhi'}})
+----------------------------------------
+
+In - is use for lookup in range of values.
+
+Details of Employee belongs to delhi or chennai
+
+db.Employee.find({'city':{$in:['delhi','chennai']}})
+
+-----------------------------------------
+
+Not In - is use for lookup exclude range of values.
+
+Details of Employee not belongs to delhi or chennai
+
+db.Employee.find({'city':{$nin:['delhi','chennai']}})
+
+--------------------------------------------
+
+AND Operator-- $and
+
+db.collection.find({$and:[{key:value},{key:value}]})
+
+Details of Employee belongs to delhi and salary-91000
+
+
+db.Employee.find({$and:[{'city':'delhi'},
+    {'salary':91000}]})
+
+---------------------------------------------
+
+
+Details of Employee belongs to chennai and salary>=50000
+
+
+db.Employee.find({$and:[{'city':'chennai'},
+    {'salary':{$gte:50000}}]})
+
+----------------------------------
+
+OR-- Any one condition to be true
+
+$or-- city is either delhi or chennai
+
+
+
+db.Employee.find({$or:[{'city':'chennai'},
+    {'city':'delhi'}]})
+
+----------------------------------
+
+Not Operator-- inverse check
+
+db.Employee.find({'city':{$not:{$eq:'delhi'}}})
+
+------------------------------------
+
+$exists
+
+the exists operator matches the documents that contains field when boolean is true, It also mathc where field is null value as well.
+
+db.Employee.find({'city':{$exists:true,
+    $in:['delhi','chennai']}})
+
+----------------------------------------
+
+db.Employee.find({'city':{$exists:true,
+    $nin:['delhi','chennai']}})
+
+---------------------------------------
+
+Q.
+To show the details of employee belongs to delhi or channai having salary>=50000.
+
+use of in, and, gt 
+........................
+
+
+db.Employee.find({$and:[{'city':{$nin:['delhi', 'chennai']}},
+     {'salary':{$gte:50000}}]})
+
+---------------------------------
+
+Removal of document
+-----------------------------
+
+
+
+
+
+db.Employee.remove()
+
+
+
+----------------------
+
+
+
+Conditional remove
+
+
+db.Employee.remove({'name':'mark'})
+
+db.Employee.find()
+
+--------------------------------
+If there are multiple documents of specified conditions , remove only 1 record
+
+db.Employee.remove({'city':{$eq:'chennai'}},1)
+
+Only 1 document of chennai will be removed.
+
+-----------------------------------------
+
+
+
+Updation of data
+----------------------
+
+
+Update salary of Vijay to 80000..
+
+
+selection criteria
+
+Update value
+
+
+
+db.Employee.update({'name':'Vijay'},{$set:{'salary':80000}})
+
+
+
+db.Employee.find()
+
+-----------------------
+
+If we multiple document of a condition and i want to update only 1 record among them..
+
+
+
+db.Employee.updateOne({'city':'delhi'},
+    {$set:{'salary':85000}})
+
+
+db.Employee.find()
+
+---------------------------
+
+Increase the salary by 4000 for people of pune...
+
+
+$inc-- increament
+
+
+db.Employee.update({'city':'pune'},
+    {$inc:{'salary':4000}})
+
+db.Employee.find()
+
+------------------------------------
+decrease the salary by 4000 for people of delhi...
+
+$dec--noooooooooooooooo
+
+$inc --- -4000
+
+db.Employee.update({'city':'delhi'},
+    {$inc:{'salary':-4000}})
+
+db.Employee.find()
+---------------------------------------------
+
+Text Searching in Mongodb
+-------------------------
+
+Helps to seach a word in string (field)..
+
+We need to create an index on text...
+
+db.writer.insert(
+[
+{"name":"john","quote":"honesty is bext policy"},
+{"name":"mark","quote":"friends are gems of life"},
+{"name":"ravi","quote":"live life like a king"}
+])
+
+
+db.writer.find()
+
+---------------------------------
+db.writer.createIndex({name:"text",quote:"text"})
+
+
+We are now ready for text searching
+------------------------------------
+
+
+I want to search all documents which contains word life..
+db.writer.find({$text:{$search:"life"}})
+
+
+Search for all contains live or life
+
+db.writer.find({$text:{$search:"live life"}})
+
+
+
+Serach for live life together only
+
+db.writer.find({$text:{$search:"\"live life\""}})
+
+------------------------------------------
+
+If we want to search the documents contains life but not word live..
+'-' operator
+
+
+
+db.writer.find({$text:{$search:"life -live"}})
+
+-------------------------------------------
+
+
+
+Relationship in mongodb represents how the documents are related to each other. It can be embedded or referenced.
+
+One to One (embeded)
+
+db.teacher.insert({"teacherid":101,
+    "name":"raj",
+    "subject":{"major":"cs","minor":"maths"}})
+    
+------------------------------
+
+
+One to Many
+
+db.exam.insert({'examid':'E001',
+'stream':'cs',
+'subjects':
+	[{'sub':'java','fees':12000},    
+	{'sub':'python','fees':14000}]
+})
+
+db.exam.findOne({'examid':'E001'},{'subjects':1})
+
+
+--------------------------
+document reference
+-------------------------
+
+db.teacher.insert([
+{"teacherid":"T1001",
+ "teacherName":"amit"},
+{"teacherid":"T1001",
+  "classid":"c123",
+  "sub":"java"},
+{'teacherid':'T1001',
+  'classid':'c345',
+  'sub':'python'}
+])
+
+db.teacher.insert([
+{'teachername':'amit',
+'teacherid':'T1001',
+classid:['c123','c345']}])
+
+
+----------------------
+Node JS to be install 12.18
+----------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
