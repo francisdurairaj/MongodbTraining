@@ -1,0 +1,16 @@
+A covered query is a query in which
+
+All the fields in the query are part of an index.
+All the fields returned in the query are in the same index.
+Since all the fields present in the query are part of an index, MongoDB matches the query conditions and returns the result using the same index without actually looking inside the documents. Since indexes are present in RAM, fetching data from indexes is much faster as compared to fetching data by scanning documents.
+
+db.Employee.createIndex({'name':1,'empno':1})
+
+
+
+
+
+db.Employee.find({"name":"raj"},{'empno':101})
+
+
+

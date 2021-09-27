@@ -1,0 +1,30 @@
+const mongoose=require('mongoose');
+mongoose.connect('mongodb://localhost:27017/test');
+
+const db=mongoose.connection;
+
+const Schema=mongoose.Schema;
+
+   const Car=new Schema({
+    _id:mongoose.ObjectId,
+    name:{ type: String, required: true },
+    type:{ type: String, required: true },
+    price:{ type: Number, required: true },
+    date: { type: Date, default: Date.now },
+},{collection:'suzuki'});
+
+var car=mongoose.model("car",Car);
+
+db.on('error', function (err) { throw err }); 
+
+db.once('open', function() {
+   console.log('mongoose connected!');
+
+});     
+
+var deleteCar = function(){
+  
+  car.remove({name : {$eq: 'swift'}})
+}
+
+updateCar()

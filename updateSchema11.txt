@@ -1,0 +1,31 @@
+const mongoose=require('mongoose');
+mongoose.connect('mongodb://localhost:27017/mongotest');
+
+const db=mongoose.connection;
+
+const Schema=mongoose.Schema;
+
+   const Car=new Schema({
+    _id:mongoose.ObjectId,
+    name:{ type: String, required: true },
+    price:{ type: Number, required: true }
+},{collection:'suzuki'});
+
+var car=mongoose.model("car",Car);
+
+db.on('error', function (err) { throw err }); 
+
+db.once('open', function() {
+   console.log('mongoose connected!');
+
+});     
+
+var updateCar = function(){
+  
+  car.update({name : {$eq: 'swift'}}, {$set: {name: "Mongoose Demo 3.1"}}, function(err, result){
+    console.log("Updated successfully");
+    console.log(result);
+  });
+}
+
+updateCar()

@@ -1,0 +1,22 @@
+const mongoose=require('mongoose');
+mongoose.connect('mongodb://localhost:27017/test');
+
+const db=mongoose.connection;
+
+db.on('error', function (err) { throw err }); 
+
+db.once('open', function() {
+   console.log('mongoose connected!');
+   const Schema=mongoose.Schema;
+   const Car=new Schema({
+    name:String,
+    type:String,
+    price:Number,
+},{collection:'suzuki'});
+
+var car=mongoose.model("car",Car);
+car.find({name:"swift"},(err,data)=>{
+    if(err){console.log(err)}
+    else{ console.log(data)}
+});
+});

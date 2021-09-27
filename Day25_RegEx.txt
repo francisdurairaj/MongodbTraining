@@ -1,0 +1,48 @@
+MongoDB provides the functionality to search a pattern in a string during a query by writing a regular expression. A regular expression is a generalized way to match patterns with sequences of characters. MongoDB uses Perl compatible regular expressions(PCRE) version 8.42 along with UTF-8 support. In MongoDB, we can do pattern matching in two different ways:
+
+With $regex Operator
+Without $regex Operator
+
+
+db.company.insert(
+[{"name":"john","position":"developer"},
+{"name":"ravi","position":"Developer"},
+{"name":"anuj","position":"tester"},
+{"name":"raj","position":"developer"},
+{"name":"amit","position":"Tester"},
+{"name":"bobby","position":"developer"}])
+
+
+All Developers
+--------------------
+
+db.company.find({position : {$regex : "developer"}})
+
+
+-----------------
+Ignore the case
+-------------
+
+db.company.find({position : {$regex : "developer",$options:"-i"}})
+
+
+---------------------
+List of ---  name starting with r
+db.company.find({name : {$regex : "^r"}})
+
+
+
+---------------------
+
+db.company.find({name : {$regex : "^r",$options:"-i"}})
+
+
+
+---------------
+Name Ends with i
+db.company.find({name : {$regex : "i$"}})
+
+
+
+
+

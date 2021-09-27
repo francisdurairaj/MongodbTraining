@@ -1,0 +1,134 @@
+Covered Queries
+--------------------
+
+It is a query in thich all the fields of query are part of index.Mongodb matches the query condition and return the result using the same index.Since indexes are present on RAM so fetching of the data is quite fast and easy..
+
+
+db.Employee.createIndex({'name':1,'empno':1})
+
+
+db.Employee.find({'name':'Ravi'},{'empno':103})
+
+---------------------------------------------
+
+Limitation of Indexing
+---------------------------------------------
+
+Extra Overhead... Every index takes some space which might cause overhead on insert/delete/update queries.. If you dont need so much read operations pls pls do not make index.
+
+RAM Usage...Since indexes are stored in RAM so pls make sure the size index does not exceed RAM size..
+
+Query Limitation
+---------------------
+Indexing cannot be use in queries like $nin , $not or regular expression (text search)
+
+Maximum ranges of Indexing
+--------------------------
+A collection cannot have more than 64 index.
+The length of index name cannot be more than 125 characters.
+A compound index can have maximum of 31 fields only.
+
+-------------------------------------------
+
+Regular expression --
+
+MongoDB also provide functionality for searching a pattern in a string. A regular expression is a generalized way to match pattern in string.
+
+
+db.company.insert(
+[ {'name':'john','position':'developer'},
+  {'name':'ravi','position':'Developer'},
+  {'name':'anuj','position':'tester'},
+  {'name':'raj','position':'developer'},
+  {'name':'amit','position':'Tester'},
+  {'name':'bobby','position':'developer'}
+] )
+
+-----------------------------
+Pattern developer is matching
+
+db.company.find({'position':{$regex:'developer'}})
+
+-----------------------------
+
+
+I want to ignore the case..
+
+db.company.find({'position':{$regex:'developer',
+          $options:'-i'}})
+
+---------------------------------------------
+
+List  of name starting with r
+
+db.company.find({"name":{$regex:"^r"}})
+
+Ignore the case
+
+db.company.find({"name":{$regex:"^r",$options:'-i'}})
+
+-------------------------------
+
+List  of name end with i
+
+db.company.find({"name":{$regex:"i$"}})
+
+
+---------------------------------------
+Map reduce-- is a data processing programming model that will help to work on large data sets and helps to get aggregated result.Mongodb provide mapreduce() function to do so. In mapreduce we two basic operations which are map and reduce.
+The map function is used to group the releated data set.The reduce is used to perform aggregate operation.
+map reduce works on large data set. It is much similar to group by of sql statement.
+map function is emit() function . reduce is like sum,avg,min,max operations.
+The aggregate result will be in form of a collection..
+
+
+
+db.Employee.find()
+
+var map=function() { emit(this.city,this.salary) };
+var reduce=function(city,salary) {
+	return Array.sum(salary);
+	};
+db.Employee.mapReduce(map,reduce,{out:'resultcollection'});
+db.resultcollection.find()
+
+
+---------------------------
+
+Connecting mongo to node ---
+
+npm install mongodb
+--------------------
+
+installing mongodb client library in node..
+
+
+
+
+
+
+
+Mongo ORM
+------------------------
+
+
+ORM- Object relation mapping..  it is a mechanism where the object of the class direclty link to the collection of mongodb..
+Monoogse-- is orm tool....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

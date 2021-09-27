@@ -1,0 +1,35 @@
+db.geo.insert( { "Name":  "Geo" } )
+db.geo.insert( { Location : {"type":"Point","coordinates": [ 23.2222, 12.1111 ] } } )
+db.geo.insert( { Location : {"type":"Point","coordinates": [ 31.1111, 21.3212 ] } } )
+
+db.geo.createIndex( { Location: "2dsphere" } )
+
+
+
+-------------------------
+
+db.geo.find({ geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.9341465567547, 40.819491095587647 ] } } } })
+
+
+-------------------------------------
+
+db.geo.find({ location: { $geoWithin: { $centerSphere: [ [ -73.934147654, 40.82302903 ], 2 / 1163.2 ] } } }).limit(2)
+
+--------------------------
+
+db.geo.find({location :{$near :{$geometry :{coordinates :[11.11,43.21]}}}})
+
+-----------------------------------
+db.geo.find({location :{$nearSphere :[31.11,43.22]}})
+
+
+
+--------------------------------
+
+db.geo.find({location:{$geoWithin:{$center:[[-31,33],20]}}})
+
+
+
+
+
+
